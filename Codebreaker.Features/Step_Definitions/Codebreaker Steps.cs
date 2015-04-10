@@ -1,14 +1,8 @@
 ﻿namespace Codebreaker.Features.Step_Definitions
 {
-    using System;
-    using System.Collections.Generic;
     using System.IO;
-    using System.Runtime.InteropServices;
 
-    using Codebreaker;
     using Codebreaker.Lib;
-
-    using FluentAssertions;
 
     using Moq;
 
@@ -19,6 +13,8 @@
     {
         public Mock<TextWriter> MockTw;
 
+        private Game game;
+
         [Given(@"I am not playing yet")]
         public void GivenIAmNotPlayingYet()
         {
@@ -28,7 +24,7 @@
         public void WhenIStartANewGame()
         {
             this.MockTw = new Mock<TextWriter>();
-            new Game(this.MockTw.Object).Start();
+            new Game(this.MockTw.Object).Start("1234");
         }
 
         [Then(@"I should see ""(.*)""")]
@@ -36,5 +32,29 @@
         {
             this.MockTw.Verify(tw => tw.WriteLine(message));
         }
+
+        #region ---- Guessing ----
+
+        [Given(@"the secret code is ""(.*)""")]
+        public void GivenTheSecretCodeIs(string secret)
+        {
+            this.MockTw = new Mock<TextWriter>();
+            this.game = new Game(this.MockTw.Object);
+            this.game.Start(secret);
+        }
+
+        [When(@"I guess ""(.*)""")]
+        public void WhenIGuess(string guess)
+        {
+            this.game.Guess(guess);
+        }
+
+        [Then(@"the mark should be ""(.*)""")]
+        public void ThenTheMarkShouldBe(string mark)
+        {
+            this.MockTw.Verify(tw => tw.WriteLine(mark));
+        }
+
+        #endregion
     }
 }

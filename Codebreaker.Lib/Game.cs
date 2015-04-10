@@ -17,10 +17,14 @@
             this.textWriter = textWriter;
         }
 
-        public void Start()
+        public void Start(string secret)
         {
             this.textWriter.WriteLine("Welcome to Codebreaker!");
             this.textWriter.WriteLine("Enter guess:");
+        }
+
+        public void Guess(string guess)
+        {
         }
     }
 }
