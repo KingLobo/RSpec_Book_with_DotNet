@@ -1,8 +1,10 @@
 ﻿namespace Codebreaker.Lib
 {
     using System;
+    using System.Collections.Generic;
     using System.Globalization;
     using System.IO;
+    using System.Linq;
     using System.Text;
 
     /// <summary>
@@ -10,8 +12,10 @@
     /// </summary>
     public class Game
     {
-        private readonly TextWriter textWriter;
+        private static readonly int[] Range = new[] { 0, 1, 2, 3 };
 
+        private readonly TextWriter textWriter;
+        
         private string secret;
 
         /// <summary>
@@ -54,25 +58,19 @@
         /// </param>
         public void Guess(string guess)
         {
-            StringBuilder markBuffer = new StringBuilder();
+            this.textWriter.WriteLine(
+                new string('+', this.ExactMatchCount(guess))
+                + new string('-', this.NumberMatchCount(guess)));
+        }
 
-            for (var i = 0; i < 4; i++)
-            {
-                if (this.IsExactMatch(guess, i))
-                {
-                    markBuffer.Append("+");
-                }
-            }
+        private int NumberMatchCount(string guess)
+        {
+            return Range.Count(i => this.IsNumberMatch(guess, i));
+        }
 
-            for (var i = 0; i < 4; i++)
-            {
-                if (this.IsNumberMatch(guess, i))
-                {
-                    markBuffer.Append("-");
-                }
-            }
-            
-            this.textWriter.WriteLine(markBuffer.ToString());
+        private int ExactMatchCount(string guess)
+        {
+            return Range.Count(i => this.IsExactMatch(guess, i));
         }
 
         private bool IsNumberMatch(string guess, int index)
