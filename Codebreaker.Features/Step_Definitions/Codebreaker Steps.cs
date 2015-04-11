@@ -9,7 +9,7 @@
     using TechTalk.SpecFlow;
 
     [Binding]
-    public class Codebreaker_Steps
+    public class Codebreaker_steps
     {
         public Mock<TextWriter> MockTw;
 
