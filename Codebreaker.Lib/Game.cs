@@ -5,14 +5,13 @@
     using System.Globalization;
     using System.IO;
     using System.Linq;
-    using System.Text;
 
     /// <summary>
     /// The game.
     /// </summary>
     public class Game
     {
-        private static readonly int[] Range = new[] { 0, 1, 2, 3 };
+        private static readonly IEnumerable<int> SecretRange = Enumerable.Range(0, 4);
 
         private readonly TextWriter textWriter;
         
@@ -65,12 +64,12 @@
 
         private int NumberMatchCount(string guess)
         {
-            return Range.Count(i => this.IsNumberMatch(guess, i));
+            return SecretRange.Count(i => this.IsNumberMatch(guess, i));
         }
 
         private int ExactMatchCount(string guess)
         {
-            return Range.Count(i => this.IsExactMatch(guess, i));
+            return SecretRange.Count(i => this.IsExactMatch(guess, i));
         }
 
         private bool IsNumberMatch(string guess, int index)
