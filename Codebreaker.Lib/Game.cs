@@ -11,11 +11,11 @@
     /// </summary>
     public class Game
     {
-        private static readonly IEnumerable<int> SecretRange = Enumerable.Range(0, 4);
-
         private readonly TextWriter textWriter;
         
         private string secret;
+
+        private IEnumerable<int> secretRange;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Game"/> class.
@@ -44,6 +44,7 @@
         public void Start(string theSecret)
         {
             this.secret = theSecret;
+            this.secretRange = Enumerable.Range(0, this.secret.Length);
 
             this.textWriter.WriteLine("Welcome to Codebreaker!");
             this.textWriter.WriteLine("Enter guess:");
@@ -64,12 +65,12 @@
 
         private int NumberMatchCount(string guess)
         {
-            return SecretRange.Count(i => this.IsNumberMatch(guess, i));
+            return this.secretRange.Count(i => this.IsNumberMatch(guess, i));
         }
 
         private int ExactMatchCount(string guess)
         {
-            return SecretRange.Count(i => this.IsExactMatch(guess, i));
+            return this.secretRange.Count(i => this.IsExactMatch(guess, i));
         }
 
         private bool IsNumberMatch(string guess, int index)
