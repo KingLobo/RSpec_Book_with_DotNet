@@ -1,6 +1,7 @@
 ﻿namespace Codebreaker
 {
     using System;
+    using System.Runtime.InteropServices;
 
     using Codebreaker.Lib;
 
@@ -8,10 +9,27 @@
     {
         static void Main()
         {
-            new Game(Console.Out).Start("1234");
+            var game = new Game(Console.Out).Start("1234");
 
-            Console.WriteLine(Environment.NewLine + "Press ENTER to Exit...");
-            Console.ReadLine();
+            var done = false;
+            while (!done)
+            {
+                var readLine = Console.ReadLine();
+                if (string.IsNullOrEmpty(readLine))
+                {
+                    done = true;
+                    continue;
+                }
+
+                var guess = readLine.Trim();
+                if (guess.Length > 4)
+                {
+                    guess = guess.Substring(0, 4);
+                }
+
+                game.Guess(guess);
+                Console.WriteLine();
+            }
         }
     }
 }
