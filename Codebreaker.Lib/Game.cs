@@ -1,10 +1,7 @@
 ﻿namespace Codebreaker.Lib
 {
     using System;
-    using System.Collections.Generic;
-    using System.Globalization;
     using System.IO;
-    using System.Linq;
 
     /// <summary>
     /// The game.
@@ -14,8 +11,6 @@
         private readonly TextWriter textWriter;
         
         private string secret;
-
-        private IEnumerable<int> secretRange;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Game"/> class.
@@ -41,13 +36,17 @@
         /// <param name="theSecret">
         /// The Secret.
         /// </param>
-        public void Start(string theSecret)
+        /// <returns>
+        /// This <see cref="Game"/>.
+        /// </returns>
+        public Game Start(string theSecret)
         {
             this.secret = theSecret;
-            this.secretRange = Enumerable.Range(0, this.secret.Length);
 
             this.textWriter.WriteLine("Welcome to Codebreaker!");
             this.textWriter.WriteLine("Enter guess:");
+
+            return this;
         }
 
         /// <summary>
@@ -58,30 +57,11 @@
         /// </param>
         public void Guess(string guess)
         {
+            var marker = new Marker(this.secret, guess);
+
             this.textWriter.WriteLine(
-                new string('+', this.ExactMatchCount(guess))
-                + new string('-', this.NumberMatchCount(guess)));
-        }
-
-        private int NumberMatchCount(string guess)
-        {
-            return this.secretRange.Count(i => this.IsNumberMatch(guess, i));
-        }
-
-        private int ExactMatchCount(string guess)
-        {
-            return this.secretRange.Count(i => this.IsExactMatch(guess, i));
-        }
-
-        private bool IsNumberMatch(string guess, int index)
-        {
-            return this.secret.Contains(guess[index].ToString(CultureInfo.InvariantCulture))
-                 && !this.IsExactMatch(guess, index);
-        }
-
-        private bool IsExactMatch(string guess, int index)
-        {
-            return guess[index].Equals(this.secret[index]);
+                new string('+', marker.ExactMatchCount())
+                + new string('-', marker.NumberMatchCount()));
         }
     }
 }

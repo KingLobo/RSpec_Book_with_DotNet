@@ -60,8 +60,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Marker_spec.cs" />
     <Compile Include="Properties\Annotations.cs" />
-    <Compile Include="When_starting_a_game.cs" />
+    <Compile Include="Game_spec.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
